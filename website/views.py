@@ -1,29 +1,21 @@
-#from flask import Blueprint
+#Not Completed, got Errors
+
 from flask import Flask, render_template, request, redirect, session
-from flask_mysqldb import MySQL
+from models import db, User
 import bcrypt
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
 
-# MySQL configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'blood_donation'
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blood_donation.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-mysql = MySQL(app)
+db.init_app(app)
 
 @app.route('/')
 def home():
-     return render_template('base.html')
-
-# @app.route('/')
-# def home():
-#     if 'username' in session:
-#         return render_template('base.html', username=session['username'])
-#     else:
-#         return redirect('/login')
+    return render_template('base.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -31,15 +23,13 @@ def register():
         name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
-        username = request.form['username']
         password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+        role = 'user'
 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (name, email, phone, username, password) VALUES (%s, %s, %s, %s, %s)", (name, email, phone, username, password))
-        mysql.connection.commit()
-        cur.close()
+        user = User(Name=name, Email=email, Phone=phone, Password=password, Role=role)
+        user.create()
 
-        session['username'] = username
+        session['email'] = email
         return redirect('/')
     else:
         return render_template('register.html')
@@ -47,29 +37,24 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE username=%s", [username])
-        user = cur.fetchone()
-        cur.close()
+        user = User.get_by_email(email)
 
-        if user:
-            if bcrypt.checkpw(password, user[4].encode('utf-8')):
-                session['username'] = username
-                return redirect('/')
-            else:
-                return render_template('login.html', error='Invalid username or password')
+        if user and user.check_password(password):
+            session['email'] = email
+            return redirect('/')
         else:
-            return render_template('login.html', error='Invalid username or password')
+            return render_template('login.html', error='Invalid email or password')
     else:
         return render_template('login.html')
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.pop('email', None)
     return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
