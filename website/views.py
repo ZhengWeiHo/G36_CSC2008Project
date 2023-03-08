@@ -1,23 +1,26 @@
 #Not Completed, got Errors
 
-from flask import Flask, render_template, request, redirect, session
-from models import db, User
+from . import db
+from .models import User
+from flask import Blueprint, Flask, render_template, request, redirect, session
 import bcrypt
 
-app = Flask(__name__)
-app.secret_key = "secret_key"
+views = Blueprint('views', __name__)
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blood_donation.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app = Flask(__name__)
+# app.secret_key = "secret_key"
 
-db.init_app(app)
+# # Database configuration
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blood_donation.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route('/')
+# db.init_app(app)
+
+@views.route('/')
 def home():
     return render_template('base.html')
 
-@app.route('/register', methods=['GET', 'POST'])
+@views.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         name = request.form['name']
@@ -27,14 +30,15 @@ def register():
         role = 'user'
 
         user = User(Name=name, Email=email, Phone=phone, Password=password, Role=role)
-        user.create()
+        db.session.add(user)
+        db.session.commit()
 
         session['email'] = email
         return redirect('/')
     else:
         return render_template('register.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@views.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -50,11 +54,11 @@ def login():
     else:
         return render_template('login.html')
 
-@app.route('/logout')
+@views.route('/logout')
 def logout():
     session.pop('email', None)
     return redirect('/')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
