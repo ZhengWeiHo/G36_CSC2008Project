@@ -1,7 +1,7 @@
 #Not Completed, got Errors
 
 from . import db
-from .models import User
+from .models import Users
 from flask import Blueprint, Flask, render_template, request, redirect, session
 import bcrypt
 
@@ -28,8 +28,9 @@ def register():
         phone = request.form['phone']
         password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
         role = 'user'
+        userid = 8888889
 
-        user = User(Name=name, Email=email, Phone=phone, Password=password, Role=role)
+        user = Users(UserID = userid, Name=name, Email=email, Phone=phone, Password=password, Role=role)
         db.session.add(user)
         db.session.commit()
 
@@ -44,7 +45,7 @@ def login():
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        user = User.get_by_email(email)
+        user = Users.get_by_email(email)
 
         if user and user.check_password(password):
             session['email'] = email
