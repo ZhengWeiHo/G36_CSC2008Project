@@ -1,8 +1,9 @@
 #Not Completed, got Errors
 
+import uuid
 from . import db
 from .models import Users
-from flask import Blueprint, Flask, render_template, request, redirect, session
+from flask import Blueprint, Flask, render_template, request, redirect, session, flash
 import bcrypt
 
 views = Blueprint('views', __name__)
@@ -28,9 +29,9 @@ def register():
         phone = request.form['phone']
         password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
         role = 'user'
-        userid = 8888889
+        userid = str(uuid.uuid4())
 
-        user = Users(UserID = userid, Name=name, Email=email, Phone=phone, Password=password, Role=role)
+        user = Users(UserID=userid,Name=name, Email=email, Phone=phone, Password=password, Role=role)
         db.session.add(user)
         db.session.commit()
 
@@ -46,10 +47,14 @@ def login():
         password = request.form['password'].encode('utf-8')
 
         user = Users.get_by_email(email)
+        
 
         if user and user.check_password(password):
             session['email'] = email
-            return redirect('/')
+
+            # Show a notification of successful login
+            flash('Login successful', 'success')
+            return render_template('main.html')
         else:
             return render_template('login.html', error='Invalid email or password')
     else:
