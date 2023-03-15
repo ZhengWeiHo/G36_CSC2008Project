@@ -19,52 +19,60 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def home():
-    return render_template('base.html')
+    return render_template('index.html')
 
-@views.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-        role = 'user'
-        userid = str(uuid.uuid4())
+# @views.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         name = request.form['name']
+#         email = request.form['email']
+#         phone = request.form['phone']
+#         password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+#         role = 'user'
+#         userid = str(uuid.uuid4())
 
-        user = Users(UserID=userid,Name=name, Email=email, Phone=phone, Password=password, Role=role)
-        db.session.add(user)
-        db.session.commit()
+#         user = Users(UserID=userid,Name=name, Email=email, Phone=phone, Password=password, Role=role)
+#         db.session.add(user)
+#         db.session.commit()
 
-        session['email'] = email
-        return redirect('/')
-    else:
-        return render_template('register.html')
+#         session['email'] = email
+#         return redirect('/')
+#     else:
+#         return render_template('register.html')
 
-@views.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password'].encode('utf-8')
+# @views.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if request.method == 'POST':
+#         email = request.form['email']
+#         password = request.form['password'].encode('utf-8')
 
-        user = Users.get_by_email(email)
+#         user = Users.get_by_email(email)
         
 
-        if user and user.check_password(password):
-            session['email'] = email
+#         if user and user.check_password(password):
+#             session['email'] = email
 
-            # Show a notification of successful login
-            flash('Login successful', 'success')
-            return render_template('main.html')
-        else:
-            return render_template('login.html', error='Invalid email or password')
-    else:
-        return render_template('login.html')
+#             # Show a notification of successful login
+#             flash('Login successful', 'success')
+#             return render_template('main.html')
+#         else:
+#             return render_template('login.html', error='Invalid email or password')
+#     else:
+#         return render_template('login.html')
 
-@views.route('/logout')
-def logout():
-    session.pop('email', None)
-    return redirect('/')
+# @views.route('/logout')
+# def logout():
+#     session.pop('email', None)
+#     return redirect('/')
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+@views.route('/main')
+def mainpage():
+    return render_template('main.html')
 
+@views.route('/appointment')
+def appointment():
+    return render_template('appointment.html')
+
+@views.route('/donationhistory')
+def donationhistory():
+    return render_template('donationhistory.html')

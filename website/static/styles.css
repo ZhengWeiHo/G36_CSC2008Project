@@ -27,3 +27,8 @@ nav ul li a {
 nav ul li a:hover {
     background-color: #555;
 }
+
+#search-btn {
+    width: 100%;
+    margin-top: 30px;
+}

@@ -1,23 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Blood Donation</title>
-</head>
-<body>
-	<h1>Blood Donation</h1>
-	<p>Welcome to our blood donation website. Please click the buttons below to make an appointment or view your donation history.</p>
+{% extends "base.html" %}
 
-	<button onclick="makeAppointment()">Make Appointment</button>
-	<button onclick="viewHistory()">See Donation History</button>
+{% block text %}
+<div class="container my-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8 text-center">
+		<h1 class="mb-4">Blood Donation</h1>
+		<p class="lead">Welcome to our blood donation website. Please click the buttons below to make an appointment or view your donation history.</p>
+		<div class="my-4">
+			<button class="btn btn-lg btn-primary me-3" onclick="makeAppointment()">Make Appointment</button>
+			<button class="btn btn-lg btn-secondary" onclick="viewHistory()">See Donation History</button>
+		</div>
+		</div>
+	</div>
+</div>
+  
+<script>
+	function makeAppointment() {
+		// code to redirect user to appointment page goes here
+	}
 
-	<script>
-		function makeAppointment() {
-			// code to redirect user to appointment page goes here
-		}
-
-		function viewHistory() {
-			// code to redirect user to donation history page goes here
-		}
-	</script>
-</body>
-</html>
+	function viewHistory() {
+		// code to redirect user to donation history page goes here
+	}
+</script>
+{%endblock%}
