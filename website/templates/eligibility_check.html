@@ -131,6 +131,8 @@
 </div>
 
 <script>
+
+    
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
     'use strict'
@@ -153,7 +155,9 @@
     })()
 
     function checkEligibility() {
+        if (checkForm()) {
         const form = document.getElementById('eligibility-form');
+        
         const overseasTravel = form.elements['overseas-travel'].value;
         const fever = form.elements['fever'].value;
         const covid = form.elements['covid'].value;
@@ -178,6 +182,16 @@
         }
 
         document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have received a vaccination in the last 12 months.';
+        }
+        }
+
+        function checkForm() {
+            const form = document.getElementById('eligibility-form');
+            if (!form.checkValidity()) {
+                alert("Please fill out all the questions.");
+                return false;
+            }
+            return true;
         }
 
 </script>

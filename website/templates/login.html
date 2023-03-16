@@ -14,11 +14,18 @@
         <form method="post" action="/login">
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <input type="email" class="form-control" id="email" name="email" required
+              oninvalid="this.setCustomValidity('Please enter your email address')"
+              oninput="this.setCustomValidity('')">
+            <div class="invalid-feedback">Please enter your email address.</div>
+              
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input type="password" class="form-control" id="password" name="password" required
+              oninvalid="this.setCustomValidity('Please enter your password')"
+              oninput="this.setCustomValidity('')">
+            <div class="invalid-feedback">Please enter your password.</div>
           </div>
           <button type="submit" class="btn btn-primary">Login</button>
 		  <div class="mt-3">
