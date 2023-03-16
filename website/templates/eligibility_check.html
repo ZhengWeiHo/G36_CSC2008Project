@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blood Donation Eligibility Check</title>
+    <style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+		}
+        header, footer {
+		background-color: #c3002f;
+		color: #fff;
+		padding: 10px;
+		text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        form {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #c3002f;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #99001d;
+        }
+
+        #eligibility-result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background-color: #ccc;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .progress-bar__inner {
+            background-color: #c3002f;
+            height: 100%;
+            border-radius: 5px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+	<h1>Blood Donation Eligibility Check</h1>
+	<form id="eligibility-form">
+        <p>As you are donating for the first time, you are advised to check if you meet the basic eligibility criteria for blood donation. This could save you a wasted trip to the blood bank.</p>
+        <p><b style="color: red;">CHECK ELIGIBILITY QUESTIONAIRES</b></p>
+      
+        <label for="overseas-travel">Have you travelled overseas in the last 12 months?</label><br>
+        <input type="radio" id="overseas-travel-yes" name="overseas-travel" value="yes">
+        <label for="overseas-travel-yes">Yes</label><br>
+        <input type="radio" id="overseas-travel-no" name="overseas-travel" value="no">
+        <label for="overseas-travel-no">No</label><br><br>
+      
+        <label for="fever">Have you had fever in the last 4 weeks?</label><br>
+        <input type="radio" id="fever-yes" name="fever" value="yes">
+        <label for="fever-yes">Yes</label><br>
+        <input type="radio" id="fever-no" name="fever" value="no">
+        <label for="fever-no">No</label><br><br>
+      
+        <label for="covid">Have you had COVID in the last 2 weeks?</label><br>
+        <input type="radio" id="covid-yes" name="covid" value="yes">
+        <label for="covid-yes">Yes</label><br>
+        <input type="radio" id="covid-no" name="covid" value="no">
+        <label for="covid-no">No</label><br><br>
+      
+        <label for="symptoms">Have you had diarrhea, sore throat, cough or runny nose in the last 1 week?</label><br>
+        <input type="radio" id="symptoms-yes" name="symptoms" value="yes">
+        <label for="symptoms-yes">Yes</label><br>
+        <input type="radio" id="symptoms-no" name="symptoms" value="no">
+        <label for="symptoms-no">No</label><br><br>
+      
+        <label for="medication">Have you taken medication, herbal supplements or traditional herbal remedies in the last 3 days?</label><br>
+        <input type="radio" id="medication-yes" name="medication" value="yes">
+        <label for="medication-yes">Yes</label><br>
+        <input type="radio" id="medication-no" name="medication" value="no">
+        <label for="medication-no">No</label><br><br>
+      
+        <label for="tattoo">Have you had a tattoo, skin piercing or acupuncture done in the last 12 months?</label><br>
+        <input type="radio" id="tattoo-yes" name="tattoo" value="yes">
+        <label for="tattoo-yes">Yes</label><br>
+        <input type="radio" id="tattoo-no" name="tattoo" value="no">
+        <label for="tattoo-no">No</label><br><br>
+      
+        <label for="received-vaccination">Have you received any vaccination in the last 12 months?</label><br>
+        <input type="radio" id="received-vaccination-yes" name="received-vaccination" value="yes">
+        <label for="received-vaccination-yes">Yes</label><br>
+        <input type="radio" id="received-vaccination-no" name="received-vaccination" value="no">
+        <label for="received-vaccination-no">No</label><br><br>
+
+        <button type="button" onclick="checkEligibility()">Check Eligibility</button>
+	</form>
+    <p id="eligibility-result"></p>
+
+	<script>
+		function checkEligibility() {
+            const form = document.getElementById('eligibility-form');
+            const overseasTravel = form.elements['overseas-travel'].value;
+            const fever = form.elements['fever'].value;
+            const covid = form.elements['covid'].value;
+            const symptoms = form.elements['symptoms'].value;
+            const medication = form.elements['medication'].value;
+            const tattoo = form.elements['tattoo'].value;
+            const receivedVaccination = form.elements['received-vaccination'].value;
+
+            if (overseasTravel === 'yes') {
+                document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have travelled overseas in the last 12 months.';
+                return;
+            }
+
+            if (fever === 'yes' || covid === 'yes' || symptoms === 'yes' || medication === 'yes' || tattoo === 'yes') {
+                document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have one or more of the risk factors.';
+                return;
+            }
+
+            if (receivedVaccination === 'no') {
+                document.getElementById('eligibility-result').textContent = 'You are eligible for donation.';
+                return;
+            }
+
+            document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have received a vaccination in the last 12 months.';
+            }
+
+	</script>
+</body>
+</html>

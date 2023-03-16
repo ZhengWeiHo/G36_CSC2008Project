@@ -20,7 +20,7 @@ def login():
 
             # Show a notification of successful login
             flash('Login successful', 'success')
-            return render_template('main.html')
+            return redirect('/main')
         else:
             return render_template('login.html', error='Invalid email or password')
     else:
