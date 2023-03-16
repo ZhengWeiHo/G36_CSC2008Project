@@ -73,6 +73,10 @@ def mainpage():
 def appointment():
     return render_template('appointment.html')
 
+@views.route('/startcheck')
+def startcheck():
+    return render_template('startcheck.html')
+
 @views.route('/donationhistory')
 def donationhistory():
     return render_template('donationhistory.html')

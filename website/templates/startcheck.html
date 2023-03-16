@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block text %}
+<div class="container my-5">
+    <div class="alert alert-info" role="alert">
+        Welcome to the Eligibility Check! Please click the button below to start the check.
+    </div>
+    <button type="button" class="btn btn-primary" onclick="startCheck()">Start Check</button>
+</div>
+<script>
+	function startCheck() {
+		// Redirect user to the appointment page
+		window.location.href = "/eligibility";
+	}
+</script>
+{% endblock %}

@@ -41,7 +41,7 @@ def register():
         db.session.commit()
 
         session['email'] = email
-        return redirect('/main')
+        return redirect('/login')
     else:
         return render_template('register.html')
 
