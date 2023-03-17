@@ -66,21 +66,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>2022-01-15</td>
-                <td>500 ml</td>
-                <td>New York Blood Center</td>
-            </tr>
-            <tr>
-                <td>2021-11-28</td>
-                <td>250 ml</td>
-                <td>Red Cross Blood Bank</td>
-            </tr>
-            <tr>
-                <td>2021-09-01</td>
-                <td>300 ml</td>
-                <td>St. Mary's Hospital</td>
-            </tr>
+            {% for donation in donations %}
+                <tr>
+                    <td>{{ donation[0] }}</td>
+                    <td>{{ donation[1] }} ml</td>
+                    <td>{{ donation[2] }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
