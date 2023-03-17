@@ -1,56 +1,87 @@
 {% extends "base.html" %}
 
 {% block text %}
+<style>
+    /* Custom CSS */
+    .table-custom {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-custom thead th {
+        background-color: #34495e;
+        color: #ecf0f1;
+    }
+
+    .form-custom {
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-input {
+        margin-bottom: 20px;
+    }
+
+    #search-btn {
+        width: 100%;
+        margin-top: 30px;
+    }
+</style>
 <div class="container my-5">
     <h1 class="mb-4">Donation History</h1>
 
-    <div class="row align-items-center mb-3">
-        <div class="col-md-3">
-            <label for="filter-date" class="form-label">Filter by Date:</label>
-            <input type="date" class="form-control" id="filter-date">
-        </div>
-        <div class="col-md-3">
-            <label for="filter-quantity" class="form-label">Filter by Quantity:</label>
-            <input type="number" class="form-control" id="filter-quantity">
-        </div>
-        <div class="col-md-3">
-            <label for="filter-location" class="form-label">Filter by Location:</label>
-            <select class="form-select" id="filter-location">
-                <option value="">All Locations</option>
-                <option value="New York Blood Center">New York Blood Center</option>
-                <option value="Red Cross Blood Bank">Red Cross Blood Bank</option>
-                <option value="St. Mary's Hospital">St. Mary's Hospital</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <button class="btn btn-primary" id="search-btn">Search</button>
+    <div class="form-custom mb-4">
+        <div class="row">
+            <div class="col-md-3 filter-input">
+                <label for="filter-date" class="form-label">Filter by Date:</label>
+                <input type="date" class="form-control" id="filter-date">
+            </div>
+            <div class="col-md-3 filter-input">
+                <label for="filter-quantity" class="form-label">Filter by Quantity:</label>
+                <input type="number" class="form-control" id="filter-quantity">
+            </div>
+            <div class="col-md-3 filter-input">
+                <label for="filter-location" class="form-label">Filter by Location:</label>
+                <select class="form-select" id="filter-location">
+                    <option value="">All Locations</option>
+                    <option value="New York Blood Center">New York Blood Center</option>
+                    <option value="Red Cross Blood Bank">Red Cross Blood Bank</option>
+                    <option value="St. Mary's Hospital">St. Mary's Hospital</option>
+                </select>
+            </div>
+            <div class="col-md-3 filter-input d-flex align-items-end">
+                <button class="btn btn-primary" id="search-btn">Search</button>
+            </div>
         </div>
     </div>
-    <table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-        <th>Date</th>
-        <th>Quantity</th>
-        <th>Location</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td>2022-01-15</td>
-        <td>500 ml</td>
-        <td>New York Blood Center</td>
-        </tr>
-        <tr>
-        <td>2021-11-28</td>
-        <td>250 ml</td>
-        <td>Red Cross Blood Bank</td>
-        </tr>
-        <tr>
-        <td>2021-09-01</td>
-        <td>300 ml</td>
-        <td>St. Mary's Hospital</td>
-        </tr>
-    </tbody>
+    <table class="table table-striped table-bordered table-custom">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2022-01-15</td>
+                <td>500 ml</td>
+                <td>New York Blood Center</td>
+            </tr>
+            <tr>
+                <td>2021-11-28</td>
+                <td>250 ml</td>
+                <td>Red Cross Blood Bank</td>
+            </tr>
+            <tr>
+                <td>2021-09-01</td>
+                <td>300 ml</td>
+                <td>St. Mary's Hospital</td>
+            </tr>
+        </tbody>
     </table>
 </div>
 {% endblock %}

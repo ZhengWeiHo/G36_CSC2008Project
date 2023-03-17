@@ -1,16 +1,35 @@
 {% extends "base.html" %}
 
 {% block text %}
+<style>
+    .shadow-custom {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+</style>
+
 <div class="container my-5">
-    <div class="alert alert-info" role="alert">
-        Welcome to the Eligibility Check! Please click the button below to start the check.
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-custom">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Eligibility Check</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info" role="alert">
+                        Welcome to the Eligibility Check! Please click the button below to start the check.
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="startCheck()">Start Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="button" class="btn btn-primary" onclick="startCheck()">Start Check</button>
 </div>
 <script>
-	function startCheck() {
-		// Redirect user to the appointment page
-		window.location.href = "/eligibility";
-	}
+    function startCheck() {
+        // Redirect user to the appointment page
+        window.location.href = "/eligibility";
+    }
 </script>
 {% endblock %}
