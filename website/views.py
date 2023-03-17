@@ -4,6 +4,7 @@ from . import db
 from .models import *
 from flask import Blueprint, Flask, render_template, request, redirect, session, flash
 from sqlalchemy import select
+from .models import Appointment
 
 views = Blueprint('views', __name__)
 
@@ -36,3 +37,19 @@ def donationhistory():
 
     # Pass the donations data to the donationhistory.html template
     return render_template('donationhistory.html', donations=donations)
+
+
+@views.route('/appointment', methods=['POST'])
+def appointment():
+    appointment_id = request.form['appointment_id']
+    appointment_date = request.form['date']
+    donor_id = request.form['donor_id']
+    center_id = request.form['center_id']
+    slot_id = request.form['slot_id']
+
+     # Insert the data into the Appointment table
+    appointment = Appointment(ApointmentID=appointment_id, Date=appointment_date, DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
+    db.session.add(appointment)
+    db.session.commit()
+    
+    return "Appointment created successfully!"
