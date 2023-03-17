@@ -10,9 +10,9 @@ class Users(db.Model):
     Email = db.Column(db.String(50), nullable=False, unique=True)
     Phone = db.Column(db.String(50), nullable=False)
     Password = db.Column(db.String(75), nullable=False)
-    Role = db.Column(db.String(10), nullable=False)
+    Role = db.Column(db.Integer, db.ForeignKey('roles.RoleID'), nullable=False)
 
-    role_relation = db.relationship('Roles', backref='users')
+    role_relation = db.relationship('Roles')
     donor = db.relationship('Donors', backref='user', uselist=False)
 
     # def create(self):
@@ -30,7 +30,7 @@ class Roles(db.Model):
     RoleID = db.Column(db.Integer, primary_key=True)
     RoleName = db.Column(db.String(10), unique=True)
 
-    users = db.relationship('Users', backref='role')
+    users = db.relationship('Users')
     staff = db.relationship('Staff', backref='role')
 
 class MedicalConditions(db.Model):

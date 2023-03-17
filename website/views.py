@@ -16,10 +16,6 @@ def home():
 def mainpage():
     return render_template('main.html')
 
-@views.route('/appointment')
-def appointment():
-    return render_template('appointment.html')
-
 @views.route('/startcheck')
 def startcheck():
     return render_template('startcheck.html')
