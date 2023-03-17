@@ -1,9 +1,9 @@
 #Not Completed, got Errors
 
+from sqlalchemy import select
 from . import db
 from .models import *
 from flask import Blueprint, Flask, render_template, request, redirect, session, flash
-from sqlalchemy import select
 from .models import Appointment
 
 views = Blueprint('views', __name__)

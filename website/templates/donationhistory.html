@@ -72,6 +72,10 @@
                     <td>{{ donation[1] }} ml</td>
                     <td>{{ donation[2] }}</td>
                 </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No donations available</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>

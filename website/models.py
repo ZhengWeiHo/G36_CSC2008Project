@@ -48,7 +48,7 @@ class Donors(db.Model):
     DonorWeight = db.Column(db.Float)
     BloodType = db.Column(db.String(3))
     DonorAddress = db.Column(db.String(250))
-    DonorMedicalHistory = db.Column(db.String(50), db.ForeignKey('medical_conditions.Name'))
+    DonorMedicalHistory = db.Column(db.Integer, db.ForeignKey('medical_conditions.MedicalConditionID'), nullable=True)
 
     appointments = db.relationship('Appointment', backref='donor')
     donations = db.relationship('Donations', backref='donor')
