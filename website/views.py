@@ -20,10 +20,26 @@ def mainpage():
     else:
         flash('Please log in to access this page.', 'error')
         return redirect('/login')
+    
+@views.route('/staff')
+def staffpage():
+    if is_logged_in():
+        return render_template('staff.html')
+    else:
+        flash('Please log in to access this page.', 'error')
+        return redirect('/login')
 
 @views.route('/startcheck')
 def startcheck():
     return render_template('startcheck.html')
+
+@views.route('/updatestatus')
+def updatestatus():
+    return redirect('/changestatus')
+
+@views.route('/alldonationhistory')
+def allhistory():
+    return redirect('/donationshist')
 
 # @views.route('/eligibility')
 # def eligibility():

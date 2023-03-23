@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, flash
 from . import db
-from .models import Users, Roles, Donors, MedicalConditions
+from .models import Users, Roles, Donors, MedicalConditions, Donations, Appointment
 import bcrypt
 import datetime
 
@@ -32,7 +32,12 @@ def login():
 
                 # Show a notification of successful login
                 flash('Login successful', 'success')
-                return redirect('/main')
+
+                if user.Role == 1:
+                    return redirect('/main')
+                
+                else:
+                    return redirect('/staff')
             else:
                 flash('Invalid password', 'error')
         else:
@@ -100,3 +105,14 @@ def register():
 def logout():
     session.pop('email', None)
     return redirect('/')
+
+
+@auth.route('/donationshist')
+def donations():
+    donations = Donations.query.all()
+    return render_template('allhistory.html', donations=donations)
+
+@auth.route('/changestatus')
+def changestatus():
+    appointments = Appointment.query.all()
+    return render_template('status.html', appointments=appointments)

@@ -1,0 +1,28 @@
+{% extends "base2.html" %}
+
+{% block text %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">Staff Page</h1>
+            <div class="my-4">
+                <button class="btn btn-lg btn-primary me-3" onclick="updatestatus()"><i class="fas fa-status me-2"></i>Update Status</button>
+                <button class="btn btn-lg btn-secondary" onclick="viewHistory1()"><i class="fas fa-hist me-2"></i>Donation History</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+  
+<script>
+	function updatestatus() {
+		// Redirect user to the appointment page
+		window.location.href = "/updatestatus";
+	}
+
+	function viewHistory1() {
+		// Redirect user to the donation history page
+		window.location.href = "/alldonationhistory";
+	}
+</script>
+{%endblock%}
