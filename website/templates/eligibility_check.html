@@ -27,96 +27,105 @@
     <h1 class="mb-4">Blood Donation Eligibility Check</h1>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form id="eligibility-form" class="row g-3 needs-validation" novalidate>
-                <p>As you are donating for the first time, you are advised to check if you meet the basic eligibility criteria for blood donation. This could save you a wasted trip to the blood bank.</p>
-                <div class="mb-3">
-                    <label for="overseas-travel" class="form-label">Have you travelled overseas in the last 12 months?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="overseas-travel-yes" name="overseas-travel" value="yes" required>
-                        <label class="form-check-label" for="overseas-travel-yes">Yes</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="overseas-travel-no" name="overseas-travel" value="no" required>
-                        <label class="form-check-label" for="overseas-travel-no">No</label>
-                    </div>
+            {% if user_medical_condition %}
+                <div class="alert alert-danger" role="alert">
+                    You are not eligible to donate blood due to your medical condition: {{ user_medical_condition.condition_name }}.
                 </div>
+            {% else %}
+                <div class="alert alert-success" role="alert">
+                    Based on your medical history, you are eligible to donate blood. Please fill out the form below.
+                </div>
+                <form id="eligibility-form" class="row g-3 needs-validation" novalidate>
+                    <p>As you are donating for the first time, you are advised to check if you meet the basic eligibility criteria for blood donation. This could save you a wasted trip to the blood bank.</p>
+                    <div class="mb-3">
+                        <label for="overseas-travel" class="form-label">Have you travelled overseas in the last 12 months?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="overseas-travel-yes" name="overseas-travel" value="yes" required>
+                            <label class="form-check-label" for="overseas-travel-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="overseas-travel-no" name="overseas-travel" value="no" required>
+                            <label class="form-check-label" for="overseas-travel-no">No</label>
+                        </div>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="fever" class="form-label">Have you had fever in the last 4 weeks?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="fever-yes" name="fever" value="yes" required>
-                        <label class="form-check-label" for="fever-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="fever" class="form-label">Have you had fever in the last 4 weeks?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="fever-yes" name="fever" value="yes" required>
+                            <label class="form-check-label" for="fever-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="fever-no" name="fever" value="no" required>
+                            <label class="form-check-label" for="fever-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="fever-no" name="fever" value="no" required>
-                        <label class="form-check-label" for="fever-no">No</label>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="covid" class="form-label">Have you had COVID in the last 2 weeks?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="covid-yes" name="covid" value="yes" required>
-                        <label class="form-check-label" for="covid-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="covid" class="form-label">Have you had COVID in the last 2 weeks?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="covid-yes" name="covid" value="yes" required>
+                            <label class="form-check-label" for="covid-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="covid-no" name="covid" value="no" required>
+                            <label class="form-check-label" for="covid-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="covid-no" name="covid" value="no" required>
-                        <label class="form-check-label" for="covid-no">No</label>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="symptoms" class="form-label">Have you had diarrhea, sore throat, cough or runny nose in the last 1 week?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="symptoms-yes" name="symptoms" value="yes" required>
-                        <label class="form-check-label" for="symptoms-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="symptoms" class="form-label">Have you had diarrhea, sore throat, cough or runny nose in the last 1 week?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="symptoms-yes" name="symptoms" value="yes" required>
+                            <label class="form-check-label" for="symptoms-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="symptoms-no" name="symptoms" value="no" required>
+                            <label class="form-check-label" for="symptoms-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="symptoms-no" name="symptoms" value="no" required>
-                        <label class="form-check-label" for="symptoms-no">No</label>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="medication" class="form-label">Have you taken medication, herbal supplements or traditional herbal remedies in the last 3 days?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="medication-yes" name="medication" value="yes" required>
-                        <label class="form-check-label" for="medication-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="medication" class="form-label">Have you taken medication, herbal supplements or traditional herbal remedies in the last 3 days?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="medication-yes" name="medication" value="yes" required>
+                            <label class="form-check-label" for="medication-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="medication-no" name="medication" value="no" required>
+                            <label class="form-check-label" for="medication-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="medication-no" name="medication" value="no" required>
-                        <label class="form-check-label" for="medication-no">No</label>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="tattoo" class="form-label">Have you had a tattoo, skin piercing or acupuncture done in the last 12 months?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="tattoo-yes" name="tattoo" value="yes" required>
-                        <label class="form-check-label" for="tattoo-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="tattoo" class="form-label">Have you had a tattoo, skin piercing or acupuncture done in the last 12 months?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="tattoo-yes" name="tattoo" value="yes" required>
+                            <label class="form-check-label" for="tattoo-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="tattoo-no" name="tattoo" value="no" required>
+                            <label class="form-check-label" for="tattoo-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="tattoo-no" name="tattoo" value="no" required>
-                        <label class="form-check-label" for="tattoo-no">No</label>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="received-vaccination">Have you received any vaccination in the last 12 months?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="received-vaccination-yes" name="received-vaccination" value="yes" required>
-                        <label class="form-check-label" for="received-vaccination-yes">Yes</label>
+                    <div class="mb-3">
+                        <label for="received-vaccination">Have you received any vaccination in the last 12 months?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="received-vaccination-yes" name="received-vaccination" value="yes" required>
+                            <label class="form-check-label" for="received-vaccination-yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="received-vaccination-no" name="received-vaccination" value="no" required>
+                            <label class="form-check-label" for="received-vaccination-no">No</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="received-vaccination-no" name="received-vaccination" value="no" required>
-                        <label class="form-check-label" for="received-vaccination-no">No</label>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary" onclick="checkEligibility()">Check Eligibility</button>
                     </div>
-                </div>
-                <div class="col-12">
-                    <button type="button" class="btn btn-primary" onclick="checkEligibility()">Check Eligibility</button>
-                </div>
-            </form>
-            <div id="eligibility-result"></div>
+                </form>
+                <div id="eligibility-result"></div>
+            {% endif %}
         </div>
     </div>
 </div>

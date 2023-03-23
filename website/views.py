@@ -1,5 +1,3 @@
-#Not Completed, got Errors
-
 from sqlalchemy import select
 from . import db
 from .models import *
@@ -12,27 +10,55 @@ views = Blueprint('views', __name__)
 def home():
     return render_template('index.html')
 
+def is_logged_in():
+    return 'email' in session
+
 @views.route('/main')
 def mainpage():
-    return render_template('main.html')
+    if is_logged_in():
+        return render_template('main.html')
+    else:
+        flash('Please log in to access this page.', 'error')
+        return redirect('/login')
 
 @views.route('/startcheck')
 def startcheck():
     return render_template('startcheck.html')
 
+# @views.route('/eligibility')
+# def eligibility():
+#     email = session.get('email')
+#     if email:
+#         user = Users.query.filter_by(Email=email).first()
+#         donor = user.donor
+#         user_medical_condition = donor.medical_condition
+#         return render_template('eligibility.html', user_medical_condition=user_medical_condition)
+#     else:
+#         return redirect('/login')
+
 @views.route('/donationhistory')
 def donationhistory():
-     # Define a query to fetch only the required columns
-    stmt = select(Donations.DonationDate, Donations.Quantity, Donations.Location)
-    
+    # Get logged in user's email
+    logged_in_user_email = session['email']
+
+    # Get user from Users table based on logged in user's email
+    user = Users.get_by_email(logged_in_user_email)
+
+    # Get DonorID for the logged-in user
+    donor_id = user.donor.DonorID
+
+    # Define a query to fetch only the required columns for the logged-in user
+    stmt = select(Donations.DonationDate, Donations.Quantity, Donations.Location).where(Donations.DonorID == donor_id)
+
     # Execute the query
     result = db.session.execute(stmt)
-    
+
     # Fetch all records as a list of namedtuples
     donations = result.fetchall()
 
     # Pass the donations data to the donationhistory.html template
     return render_template('donationhistory.html', donations=donations)
+
 
 @views.route('appointment')
 def appointment():
