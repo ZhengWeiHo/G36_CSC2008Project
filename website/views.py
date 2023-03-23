@@ -34,9 +34,13 @@ def donationhistory():
     # Pass the donations data to the donationhistory.html template
     return render_template('donationhistory.html', donations=donations)
 
-
-@views.route('/appointment', methods=['POST'])
+@views.route('appointment')
 def appointment():
+    return render_template('appointment.html')
+
+
+@views.route('/appointment-submit', methods=['POST'])
+def appointmentSubmit():
     appointment_id = request.form['appointment_id']
     appointment_date = request.form['date']
     donor_id = request.form['donor_id']

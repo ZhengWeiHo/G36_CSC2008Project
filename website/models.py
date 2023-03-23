@@ -5,7 +5,7 @@ import bcrypt
 # db = SQLAlchemy()
 
 class Users(db.Model):
-    UserID = db.Column(db.String(36), primary_key=True)
+    UserID = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(50), nullable=False)
     Email = db.Column(db.String(50), nullable=False, unique=True)
     Phone = db.Column(db.String(50), nullable=False)
@@ -90,4 +90,4 @@ class Staff(db.Model):
     Name = db.Column(db.String(50), nullable=False)
     Email = db.Column(db.String(50), nullable=False, unique=True)
     Password = db.Column(db.String(75), nullable=False)
-    Role = db.Column(db.String(10), db.ForeignKey('roles.RoleName'))
+    Role = db.Column(db.String(10), db.ForeignKey('roles.RoleID'))

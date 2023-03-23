@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, flash
 from . import db
-from .models import Users
+from .models import Users, Roles, Donors
 import bcrypt
 import uuid
 
@@ -33,10 +33,15 @@ def register():
         email = request.form['email']
         phone = request.form['phone']
         password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-        role = 'user'
-        userid = str(uuid.uuid4())
+        user_role = 1
 
-        user = Users(UserID=userid,Name=name, Email=email, Phone=phone, Password=password, Role=role)
+        # Check whether email already exists
+        userEmail = Users.get_by_email(email)
+        if userEmail:
+            flash('Email already exists', category='error')
+            return render_template('register.html')
+
+        user = Users(Name=name, Email=email, Phone=phone, Password=password, Role=user_role.RoleID)
         db.session.add(user)
         db.session.commit()
 
