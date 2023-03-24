@@ -76,20 +76,29 @@ def donationhistory():
 
 @views.route('/appointment')
 def appointment():
-    slots = Slots.query.all()
-    return render_template('appointment.html', slots=slots)
+    
+    return render_template('appointment.html')
 
 @views.route('/available-slots', methods=['GET'])
 def availableSlots():
     selected_date = request.args.get('date')
     donation_center_id = int(request.args.get('center_id'))
 
+    # Subquery to count the number of appointments for the selected date
+    subquery = (
+        db.session.query(Appointment.SlotID, db.func.count(Appointment.AppointmentID).label('booked_count'))
+        .filter(Appointment.Date == selected_date)
+        .group_by(Appointment.SlotID)
+        .subquery()
+    )
+
+    # Join the subquery with the Slots table to get the booked_count value
     available_slots = (
-        db.session.query(Slots)
-        .outerjoin(Appointment, and_(Appointment.SlotID == Slots.SlotID, Appointment.Date == selected_date))
+        db.session.query(Slots, subquery.c.booked_count)
+        .outerjoin(subquery, Slots.SlotID == subquery.c.SlotID)
         .filter(Slots.DonationCenterID == donation_center_id)
         .group_by(Slots.SlotID)
-        .having(db.func.count(Appointment.AppointmentID) < Slots.Max_Bookings)
+        .having(db.func.coalesce(subquery.c.booked_count, 0) < Slots.Max_Bookings)
         .all()
     )
 
@@ -98,10 +107,10 @@ def availableSlots():
             "slot_id": slot.SlotID,
             "start_time": slot.StartTime.strftime('%H:%M'),
             "end_time": slot.EndTime.strftime('%H:%M'),
-            "booked_count": sum(app.Date == selected_date for app in slot.appointments),
+            "booked_count": booked_count if booked_count is not None else 0,
             "max_bookings": slot.Max_Bookings,
         }
-        for slot in available_slots
+        for slot, booked_count in available_slots
     ]
 
     return jsonify(response)
