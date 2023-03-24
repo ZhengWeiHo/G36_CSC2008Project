@@ -41,16 +41,9 @@ def updatestatus():
 def allhistory():
     return redirect('/donationshist')
 
-# @views.route('/eligibility')
-# def eligibility():
-#     email = session.get('email')
-#     if email:
-#         user = Users.query.filter_by(Email=email).first()
-#         donor = user.donor
-#         user_medical_condition = donor.medical_condition
-#         return render_template('eligibility.html', user_medical_condition=user_medical_condition)
-#     else:
-#         return redirect('/login')
+@views.route('/eligibility')
+def eligibility():
+    return render_template('eligibility_check.html')
 
 @views.route('/donationhistory')
 def donationhistory():
@@ -76,7 +69,7 @@ def donationhistory():
     return render_template('donationhistory.html', donations=donations)
 
 
-@views.route('appointment')
+@views.route('/appointment')
 def appointment():
     return render_template('appointment.html')
 

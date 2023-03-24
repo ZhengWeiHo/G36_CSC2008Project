@@ -14,10 +14,6 @@ def calculate_age(date_of_birth):
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'email' in session:
-        print("Email already in session:", session['email'])
-        return redirect('/main')
-
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')

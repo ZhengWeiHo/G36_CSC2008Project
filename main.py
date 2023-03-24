@@ -7,12 +7,5 @@ app = create_app()
 def main():
      return render_template('main.html')
 
-@app.route('/eligibility')
-def appointment():
-    return render_template('eligibility_check.html')
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
