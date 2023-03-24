@@ -60,8 +60,8 @@
                         <div class="form-group">
                             <label for="status">Status:</label>
                             <select class="form-control" id="status" name="status">
-                                <option value="Pending" {% if appointment.Status == 'Pending' %} selected {% endif %}>Pending</option>
-                                <option value="Confirmed" {% if appointment.Status == 'Confirmed' %} selected {% endif %}>Confirmed</option>
+                                <option value="Upcoming" {% if appointment.Status == 'Upcoming' %} selected {% endif %}>Upcoming</option>
+                                <option value="Completed" {% if appointment.Status == 'Completed' %} selected {% endif %}>Completed</option>
                                 <option value="Cancelled" {% if appointment.Status == 'Cancelled' %} selected {% endif %}>Cancelled</option>
                             </select>
                         </div>
