@@ -2,7 +2,7 @@ from sqlalchemy import select
 from . import db
 from .models import *
 from flask import Blueprint, Flask, render_template, request, redirect, session, flash
-from .models import Appointment
+from .models import Users, Donors, Appointment, MedicalConditions
 
 views = Blueprint('views', __name__)
 
@@ -43,7 +43,11 @@ def allhistory():
 
 @views.route('/eligibility')
 def eligibility():
-    return render_template('eligibility_check.html')
+    logged_in_user_email = session['email']
+    user = Users.get_by_email(logged_in_user_email)
+    donor = user.donor
+    user_medical_condition = donor.medical_condition
+    return render_template('eligibility_check.html', user_medical_condition=user_medical_condition)
 
 @views.route('/donationhistory')
 def donationhistory():

@@ -29,11 +29,12 @@ def login():
                 # Show a notification of successful login
                 flash('Login successful', 'success')
 
-                if user.Role == 1:
+                if int(user.Role) == 1:
                     return redirect('/main')
-                
                 else:
+                    print("Redirecting to staff page")
                     return redirect('/staff')
+
             else:
                 flash('Invalid password', 'error')
         else:

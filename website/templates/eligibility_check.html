@@ -29,7 +29,7 @@
         <div class="col-md-8">
             {% if user_medical_condition %}
                 <div class="alert alert-danger" role="alert">
-                    You are not eligible to donate blood due to your medical condition: {{ user_medical_condition.condition_name }}.
+                    You are not eligible to donate blood due to your medical condition: {{ user_medical_condition.Name }}.
                 </div>
             {% else %}
                 <div class="alert alert-success" role="alert">
