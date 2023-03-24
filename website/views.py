@@ -1,8 +1,9 @@
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from . import db
 from .models import *
-from flask import Blueprint, Flask, render_template, request, redirect, session, flash
+from flask import Blueprint, Flask, render_template, request, redirect, session, flash, jsonify
 from .models import Users, Donors, Appointment, MedicalConditions, Slots
+from datetime import datetime
 
 views = Blueprint('views', __name__)
 
@@ -78,19 +79,59 @@ def appointment():
     slots = Slots.query.all()
     return render_template('appointment.html', slots=slots)
 
+@views.route('/available-slots', methods=['GET'])
+def availableSlots():
+    selected_date = request.args.get('date')
+    donation_center_id = int(request.args.get('center_id'))
 
+    available_slots = (
+        db.session.query(Slots)
+        .outerjoin(Appointment, and_(Appointment.SlotID == Slots.SlotID, Appointment.Date == selected_date))
+        .filter(Slots.DonationCenterID == donation_center_id)
+        .group_by(Slots.SlotID)
+        .having(db.func.count(Appointment.AppointmentID) < Slots.Max_Bookings)
+        .all()
+    )
+
+    response = [
+        {
+            "slot_id": slot.SlotID,
+            "start_time": slot.StartTime.strftime('%H:%M'),
+            "end_time": slot.EndTime.strftime('%H:%M'),
+            "booked_count": sum(app.Date == selected_date for app in slot.appointments),
+            "max_bookings": slot.Max_Bookings,
+        }
+        for slot in available_slots
+    ]
+
+    return jsonify(response)
 
 @views.route('/appointment-submit', methods=['POST'])
 def appointmentSubmit():
-    # Get the form data
     center_id = request.form['center']
-    appointment_date = request.form['date'] + ' ' + request.form['time']
-    donor_id = 1 # change this to the actual donor ID
-    slot_id = 1 # change this to the actual slot ID
+    appointment_date = request.form['date']
+    # Parse the string into a date object
+    appointment_date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+    
+    # Get the logged-in user's email from the session
+    logged_in_user_email = session['email']
 
-    # Insert the data into the Appointment table
+    # Get user from Users table based on logged in user's email
+    user = Users.get_by_email(logged_in_user_email)
+
+    # Get DonorID for the logged-in user
+    donor_id = user.donor.DonorID
+
+    slot_id = request.form['time']
+
+    # Create the Appointment object with the parsed date object
     appointment = Appointment(Date=appointment_date, Status="Upcoming", DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
     db.session.add(appointment)
+    db.session.commit()
+
+    # Update the Booked_Count for the selected slot
+    slot = Slots.query.get(slot_id)
+    slot.Booked_Count += 1
     db.session.commit()
 
     return "Appointment created successfully!"

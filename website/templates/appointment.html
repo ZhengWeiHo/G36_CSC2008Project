@@ -10,10 +10,10 @@
                 <label for="center" class="form-label">Donation Center</label>
                 <select class="form-control" id="center" name="center" required>
                     <option value="">-- Select Center --</option>
-                    <option value="Outram">BloodBank@Outram</option>
-                    <option value="DhobyGhaut">BloodBank@DhobyGhaut</option>
-                    <option value="Woodlands">BloodBank@Woodlands</option>
-                    <option value="WestgateTower">BloodBank@WestgateTower</option>
+                    <option value="1">BloodBank@Outram</option>
+                    <option value="2">BloodBank@DhobyGhaut</option>
+                    <option value="3">BloodBank@Woodlands</option>
+                    <option value="4">BloodBank@WestgateTower</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -52,5 +52,33 @@
             }
         });
     });
+
+    function fetchAvailableSlots() {
+        console.log('fetchAvailableSlots() called');
+        var date = $("#date").val();
+        var centerId = $("#center").val();
+
+        if (date && centerId) {
+            $.ajax({
+                url: "{{ url_for('views.availableSlots') }}",
+                data: { date: date, center_id: centerId },
+                success: function (data) {
+                    var options = '<option value="">-- Select Time --</option>';
+
+                    data.forEach(function (slot) {
+                        options += '<option value="' + slot.slot_id + '">' + slot.start_time + ' - ' + slot.end_time + ' (' + slot.booked_count + '/' + slot.max_bookings + ')</option>';
+                    });
+
+                    $("#time").html(options);
+                }
+            });
+        } else {
+            $("#time").html('<option value="">-- Select Time --</option>');
+        }
+    }
+
+    $("#date").on("change", fetchAvailableSlots);
+    $("#center").on("change", fetchAvailableSlots);
+
 </script>
 {%endblock%}

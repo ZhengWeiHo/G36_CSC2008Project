@@ -21,6 +21,10 @@
         text-align: center;
         color: #4a4a4a;
     }
+
+    .alert {
+        margin-bottom: 30px;
+    }
 </style>
 
 <div class="container my-5">
@@ -156,43 +160,45 @@
 
     function checkEligibility() {
         if (checkForm()) {
-        const form = document.getElementById('eligibility-form');
-        
-        const overseasTravel = form.elements['overseas-travel'].value;
-        const fever = form.elements['fever'].value;
-        const covid = form.elements['covid'].value;
-        const symptoms = form.elements['symptoms'].value;
-        const medication = form.elements['medication'].value;
-        const tattoo = form.elements['tattoo'].value;
-        const receivedVaccination = form.elements['received-vaccination'].value;
-
-        if (overseasTravel === 'yes') {
-            document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have travelled overseas in the last 12 months.';
-            return;
-        }
-
-        if (fever === 'yes' || covid === 'yes' || symptoms === 'yes' || medication === 'yes' || tattoo === 'yes') {
-            document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have one or more of the risk factors.';
-            return;
-        }
-
-        if (receivedVaccination === 'no') {
-            document.getElementById('eligibility-result').textContent = 'You are eligible for donation.';
-            return;
-        }
-
-        document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have received a vaccination in the last 12 months.';
-        }
-        }
-
-        function checkForm() {
             const form = document.getElementById('eligibility-form');
-            if (!form.checkValidity()) {
-                alert("Please fill out all the questions.");
-                return false;
-            }
-            return true;
-        }
 
+            const overseasTravel = form.elements['overseas-travel'].value;
+            const fever = form.elements['fever'].value;
+            const covid = form.elements['covid'].value;
+            const symptoms = form.elements['symptoms'].value;
+            const medication = form.elements['medication'].value;
+            const tattoo = form.elements['tattoo'].value;
+            const receivedVaccination = form.elements['received-vaccination'].value;
+
+            if (overseasTravel === 'yes') {
+                document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have travelled overseas in the last 12 months.';
+                return;
+            }
+
+            if (fever === 'yes' || covid === 'yes' || symptoms === 'yes' || medication === 'yes' || tattoo === 'yes') {
+                document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have one or more of the risk factors.';
+                return;
+            }
+
+            if (receivedVaccination === 'no') {
+                document.getElementById('eligibility-result').innerHTML = 'You are eligible for donation. Redirecting to the appointment page...';
+                setTimeout(function() {
+                    window.location.href = '/appointment';
+                }, 1000); // Redirects to the appointment page after a 1-second delay
+                return;
+            } else {
+                document.getElementById('eligibility-result').textContent = 'You are not eligible for donation as you have received a vaccination in the last 12 months.';
+            }
+        }
+    }
+
+    function checkForm() {
+        const form = document.getElementById('eligibility-form');
+        if (!form.checkValidity()) {
+            alert("Please fill out all the questions.");
+            return false;
+        }
+        return true;
+    }
 </script>
 {% endblock %}
