@@ -2,7 +2,7 @@ from sqlalchemy import select
 from . import db
 from .models import *
 from flask import Blueprint, Flask, render_template, request, redirect, session, flash
-from .models import Users, Donors, Appointment, MedicalConditions
+from .models import Users, Donors, Appointment, MedicalConditions, Slots
 
 views = Blueprint('views', __name__)
 
@@ -75,20 +75,22 @@ def donationhistory():
 
 @views.route('/appointment')
 def appointment():
-    return render_template('appointment.html')
+    slots = Slots.query.all()
+    return render_template('appointment.html', slots=slots)
+
 
 
 @views.route('/appointment-submit', methods=['POST'])
 def appointmentSubmit():
-    appointment_id = request.form['appointment_id']
-    appointment_date = request.form['date']
-    donor_id = request.form['donor_id']
-    center_id = request.form['center_id']
-    slot_id = request.form['slot_id']
+    # Get the form data
+    center_id = request.form['center']
+    appointment_date = request.form['date'] + ' ' + request.form['time']
+    donor_id = 1 # change this to the actual donor ID
+    slot_id = 1 # change this to the actual slot ID
 
-     # Insert the data into the Appointment table
-    appointment = Appointment(ApointmentID=appointment_id, Date=appointment_date, DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
+    # Insert the data into the Appointment table
+    appointment = Appointment(Date=appointment_date, Status="Upcoming", DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
     db.session.add(appointment)
     db.session.commit()
-    
+
     return "Appointment created successfully!"
