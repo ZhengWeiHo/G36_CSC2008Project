@@ -116,3 +116,18 @@ def donations():
 def changestatus():
     appointments = Appointment.query.all()
     return render_template('status.html', appointments=appointments)
+
+@auth.route('/appointments/<int:id>/update', methods=['POST'])
+def update_appointment(id):
+    # Get the appointment to update
+    appointment = Appointment.query.filter_by(AppointmentID=id).first()
+
+    
+    appointment.Status = request.form['status']
+   
+
+    # Add the updated appointment to the session and commit the transaction
+    db.session.add(appointment)
+    db.session.commit()
+
+    return redirect('/changestatus')

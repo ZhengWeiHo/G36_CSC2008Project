@@ -43,7 +43,7 @@
 				<th>DonorID</th>
 				<th>DonationCenterID</th>
                 <th>SlotID</th>
-             
+                <th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,6 +55,20 @@
 				<td>{{ appointment.DonorID }}</td>
 				<td>{{ appointment.DonationCenterID }}</td>
                 <td>{{ appointment.SlotID }}</td>
+                <td>
+                    <form method="POST" action="/appointments/{{ appointment.AppointmentID }}/update">
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="Pending" {% if appointment.Status == 'Pending' %} selected {% endif %}>Pending</option>
+                                <option value="Confirmed" {% if appointment.Status == 'Confirmed' %} selected {% endif %}>Confirmed</option>
+                                <option value="Cancelled" {% if appointment.Status == 'Cancelled' %} selected {% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </td>
+            </tr>
                 
 			{% endfor %}
 		</tbody>
