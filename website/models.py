@@ -61,7 +61,7 @@ class Donations(db.Model):
 
 class Appointment(db.Model):
     AppointmentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    Date = db.Column(db.DateTime, nullable=False)
+    Date = db.Column(db.Date, nullable=False)
     Status = db.Column(db.String(20), nullable=False)
     DonorID = db.Column(db.Integer, db.ForeignKey('donors.DonorID'))
     DonationCenterID = db.Column(db.Integer, db.ForeignKey('donation_center.DonationCenterID'))
