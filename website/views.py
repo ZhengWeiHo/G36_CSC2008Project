@@ -204,10 +204,17 @@ def appointmentSubmit():
 
     return "Appointment created successfully!"
 
+# ----------------------------
+# For staff page
+# ----------------------------
 @views.route('/donationshist')
 def donations():
-    donations = Donations.query.all()
+    donations = db.session.query(Donations, Donors, Users)\
+        .join(Donors, Donations.DonorID == Donors.DonorID)\
+        .join(Users, Donors.UserID == Users.UserID)\
+        .all()
     return render_template('allhistory.html', donations=donations)
+
 
 @views.route('/changestatus')
 def changestatus():
