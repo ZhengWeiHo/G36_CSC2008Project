@@ -23,7 +23,7 @@ donor_medical_conditions = list(range(1, 9))
 donor_address = "Singapore"
 
 # Set parameters for generating donations
-donor_ids = [1, 2]
+donor_ids = list(range(1, user_count + 1))
 locations = ['BloodBank@Outram', 'BloodBank@DhobyGhaut', 'BloodBank@Woodlands', 'BloodBank@WestgateTower']
 
 # Set output directory to the directory containing the script
@@ -110,3 +110,34 @@ with open(os.path.join(output_dir, 'donations.csv'), 'w', newline='') as csvfile
         writer.writerow(donation)
 
 print("1,000 donation records written to donations.csv in same directory as script")
+
+appointments_file = open(os.path.join(output_dir, 'appointments.csv'), 'w', newline='')
+
+appointments_fieldnames = ['AppointmentID', 'Date', 'Status', 'DonorID', 'DonationCenterID', 'SlotID']
+appointments_writer = csv.DictWriter(appointments_file, fieldnames=appointments_fieldnames)
+appointments_writer.writeheader()
+
+appointment_count = 1000
+statuses = ['Completed', 'Pending']
+slot_ids = list(range(1, 33))
+donation_center_ids = list(range(1, 5))
+
+for i in range(1, appointment_count + 1):
+    appointment_date = random_date(start_date, end_date).strftime('%Y-%m-%d')
+    status = random.choice(statuses)
+    donor_id = random.choice(donor_ids)
+    donation_center_id = random.choice(donation_center_ids)
+    slot_id = random.choice(slot_ids)
+
+    appointment = {
+        'AppointmentID': i,
+        'Date': appointment_date,
+        'Status': status,
+        'DonorID': donor_id,
+        'DonationCenterID': donation_center_id,
+        'SlotID': slot_id
+    }
+    appointments_writer.writerow(appointment)
+
+appointments_file.close()
+print(f"{appointment_count} appointment records written to appointments.csv")
