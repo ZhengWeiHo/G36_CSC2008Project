@@ -47,10 +47,10 @@
                 <label for="filter-location" class="form-label">Filter by Location:</label>
                 <select class="form-select" id="filter-location">
                     <option value="">All Locations</option>
-                    <option value="1">BloodBank@Outram</option>
-                    <option value="2">BloodBank@DhobyGhaut</option>
-                    <option value="3">BloodBank@Woodlands</option>
-                    <option value="4">BloodBank@WestgateTower</option>
+                    <option value="BloodBank@Outram">BloodBank@Outram</option>
+                    <option value="BloodBank@DhobyGhaut">BloodBank@DhobyGhaut</option>
+                    <option value="BloodBank@Woodlands">BloodBank@Woodlands</option>
+                    <option value="BloodBank@WestgateTower">BloodBank@WestgateTower</option>
                 </select>
             </div>
             <div class="col-md-3 filter-input d-flex align-items-end">
@@ -82,49 +82,48 @@
     </table>
 </div>
 <script>
-    // Add an event listener to the search button
-    document.getElementById("search-btn").addEventListener("click", function() {
-        // Get the filter values from the input elements
-        const filter_date = document.getElementById("filter-date").value;
-        const filter_quantity = document.getElementById("filter-quantity").value;
-        const filter_location = document.getElementById("filter-location").value;
+    function filterDonations2() {
+        var filterDate = $('#filter-date').val();
+        var filterQuantity = $('#filter-quantity').val();
+        var filterLocation = $('#filter-location').val();
 
-        // Send an AJAX request to the filter-donation-history route
-        fetch(`/filter-donation-history?date=${filter_date}&quantity=${filter_quantity}&location=${filter_location}`)
-            .then(response => response.json())
-            .then(filtered_donations => {
-                // Update the table with the filtered donations
-                const table_body = document.querySelector("tbody");
-                table_body.innerHTML = "";
 
-                if (filtered_donations.length > 0) {
-                    filtered_donations.forEach(donation => {
-                        const row = document.createElement("tr");
-
-                        const date_cell = document.createElement("td");
-                        date_cell.textContent = donation.date;
-                        row.appendChild(date_cell);
-
-                        const quantity_cell = document.createElement("td");
-                        quantity_cell.textContent = donation.quantity + " ml";
-                        row.appendChild(quantity_cell);
-
-                        const location_cell = document.createElement("td");
-                        location_cell.textContent = donation.location;
-                        row.appendChild(location_cell);
-
-                        table_body.appendChild(row);
+        $.ajax({
+            url: '/filter_donations2',
+            data: {
+                filter_date: filterDate,
+                filter_quantity: filterQuantity,
+                filter_location: filterLocation,
+                
+            },
+            success: function(data) {
+                var tbody = $('table tbody');
+                tbody.empty();
+                if (data.length > 0) {
+                    $.each(data, function(index, item) {
+                        var row = $('<tr>');
+                        row.append($('<td>').text(item.donation_date));
+                        row.append($('<td>').text(item.quantity));
+                        row.append($('<td>').text(item.location));
+                        tbody.append(row);
                     });
                 } else {
-                    const row = document.createElement("tr");
-                    const no_data_cell = document.createElement("td");
-                    no_data_cell.colSpan = 3;
-                    no_data_cell.className = "text-center";
-                    no_data_cell.textContent = "No donations available";
-                    row.appendChild(no_data_cell);
-                    table_body.appendChild(row);
+                    var row = $('<tr>');
+                    row.append($('<td colspan="6">').text('No donations available'));
+                    tbody.append(row);
                 }
-            });
+            },
+            error: function() {
+                alert('Error filtering donations');
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('#search-btn').click(function() {
+            filterDonations2();
+        });
     });
+
 </script>
 {% endblock %}

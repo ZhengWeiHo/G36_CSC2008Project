@@ -278,3 +278,32 @@ def filter_donations():
             'location': donation.Location
         })
     return jsonify(data)
+
+
+@views.route('/filter_donations2')
+def filter_donations2():
+    query = db.session.query(Donations, Donors, Users)\
+            .join(Donors, Donors.DonorID == Donations.DonorID)\
+            .join(Users, Users.UserID == Donors.UserID)
+
+    if request.args.get('filter_date'):
+        date = datetime.strptime(request.args.get('filter_date'), '%Y-%m-%d').date()
+        query = query.filter(Donations.DonationDate == date)
+
+    if request.args.get('filter_quantity'):
+        quantity = int(request.args.get('filter_quantity'))
+        query = query.filter(Donations.Quantity == quantity)
+
+    if request.args.get('filter_location'):
+        location = request.args.get('filter_location')
+        query = query.filter(Donations.Location == location)
+
+    donations = query.all()
+    data = []
+    for donation, donor, user in donations:
+        data.append({
+            'donation_date': donation.DonationDate.strftime('%Y-%m-%d'),
+            'quantity': donation.Quantity,
+            'location': donation.Location
+        })
+    return jsonify(data)
