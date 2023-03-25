@@ -87,4 +87,52 @@
         </tbody>
     </table>
 </div>
+<script>
+        
+    function filterDonations() {
+        var filterDate = $('#filter-date').val();
+        var filterQuantity = $('#filter-quantity').val();
+        var filterLocation = $('#filter-location').val();
+
+        $.ajax({
+            url: '/filter_donations',
+            data: {
+                filter_date: filterDate,
+                filter_quantity: filterQuantity,
+                filter_location: filterLocation
+            },
+            success: function(data) {
+                var tbody = $('table tbody');
+                tbody.empty();
+                if (data.length > 0) {
+                    $.each(data, function(index, item) {
+                        var row = $('<tr>');
+                        row.append($('<td>').text(item.name));
+                        row.append($('<td>').text(item.email));
+                        row.append($('<td>').text(item.phone));
+                        row.append($('<td>').text(item.donation_date));
+                        row.append($('<td>').text(item.quantity));
+                        row.append($('<td>').text(item.location));
+                        tbody.append(row);
+                    });
+                } else {
+                    var row = $('<tr>');
+                    row.append($('<td colspan="6">').text('No donations available'));
+                    tbody.append(row);
+                }
+            },
+            error: function() {
+                alert('Error filtering donations');
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('#search-btn').click(function() {
+            filterDonations();
+        });
+    });
+
+
+</script>
 {% endblock %}
