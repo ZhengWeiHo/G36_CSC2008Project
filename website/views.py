@@ -1,4 +1,4 @@
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, join
 from . import db
 from .models import *
 from flask import Blueprint, Flask, render_template, request, redirect, session, flash, jsonify
@@ -78,6 +78,29 @@ def donationhistory():
 def appointment():
     
     return render_template('appointment.html')
+
+@views.route('/trackappointment')
+def trackappointment():
+
+    # Get logged in user's email
+    logged_in_user_email = session['email']
+
+    # Get user from Users table based on logged in user's email
+    user = Users.get_by_email(logged_in_user_email)
+
+    # Get DonorID for the logged-in user
+    donor_id = user.donor.DonorID
+
+    # Define a join query to fetch the required columns for the logged-in user with the DonationCenter name and Slot start/end time
+    stmt = (db.session.query(Appointment.Date, Appointment.Status, DonationCenter.Name, Slots.StartTime, Slots.EndTime)
+        .join(DonationCenter, DonationCenter.DonationCenterID == Appointment.DonationCenterID)
+        .join(Slots, Slots.SlotID == Appointment.SlotID)
+        .join(Donors, Donors.DonorID == Appointment.DonorID)
+        .filter(Donors.DonorID == donor_id))
+
+    result = stmt.all()
+
+    return render_template('trackappointment.html', appointments=result)
 
 @views.route('/available-slots', methods=['GET'])
 def availableSlots():

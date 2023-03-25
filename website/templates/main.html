@@ -9,6 +9,7 @@
             <div class="my-4">
                 <button class="btn btn-lg btn-primary me-3" onclick="makeAppointment()"><i class="fas fa-calendar-check me-2"></i>Make Appointment</button>
                 <button class="btn btn-lg btn-secondary" onclick="viewHistory()"><i class="fas fa-history me-2"></i>See Donation History</button>
+                <button class="btn btn-lg btn-third" onclick="seeAppointment()"><i class="fas fa-track me-2"></i>Track Appointment</button>
             </div>
         </div>
     </div>
@@ -23,6 +24,10 @@
 	function viewHistory() {
 		// Redirect user to the donation history page
 		window.location.href = "/donationhistory";
+	}
+    function seeAppointment() {
+		// Redirect user to the donation history page
+		window.location.href = "/trackappointment";
 	}
 </script>
 {%endblock%}
