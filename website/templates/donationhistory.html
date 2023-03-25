@@ -47,9 +47,10 @@
                 <label for="filter-location" class="form-label">Filter by Location:</label>
                 <select class="form-select" id="filter-location">
                     <option value="">All Locations</option>
-                    <option value="New York Blood Center">New York Blood Center</option>
-                    <option value="Red Cross Blood Bank">Red Cross Blood Bank</option>
-                    <option value="St. Mary's Hospital">St. Mary's Hospital</option>
+                    <option value="1">BloodBank@Outram</option>
+                    <option value="2">BloodBank@DhobyGhaut</option>
+                    <option value="3">BloodBank@Woodlands</option>
+                    <option value="4">BloodBank@WestgateTower</option>
                 </select>
             </div>
             <div class="col-md-3 filter-input d-flex align-items-end">
@@ -80,4 +81,50 @@
         </tbody>
     </table>
 </div>
+<script>
+    // Add an event listener to the search button
+    document.getElementById("search-btn").addEventListener("click", function() {
+        // Get the filter values from the input elements
+        const filter_date = document.getElementById("filter-date").value;
+        const filter_quantity = document.getElementById("filter-quantity").value;
+        const filter_location = document.getElementById("filter-location").value;
+
+        // Send an AJAX request to the filter-donation-history route
+        fetch(`/filter-donation-history?date=${filter_date}&quantity=${filter_quantity}&location=${filter_location}`)
+            .then(response => response.json())
+            .then(filtered_donations => {
+                // Update the table with the filtered donations
+                const table_body = document.querySelector("tbody");
+                table_body.innerHTML = "";
+
+                if (filtered_donations.length > 0) {
+                    filtered_donations.forEach(donation => {
+                        const row = document.createElement("tr");
+
+                        const date_cell = document.createElement("td");
+                        date_cell.textContent = donation.date;
+                        row.appendChild(date_cell);
+
+                        const quantity_cell = document.createElement("td");
+                        quantity_cell.textContent = donation.quantity + " ml";
+                        row.appendChild(quantity_cell);
+
+                        const location_cell = document.createElement("td");
+                        location_cell.textContent = donation.location;
+                        row.appendChild(location_cell);
+
+                        table_body.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement("tr");
+                    const no_data_cell = document.createElement("td");
+                    no_data_cell.colSpan = 3;
+                    no_data_cell.className = "text-center";
+                    no_data_cell.textContent = "No donations available";
+                    row.appendChild(no_data_cell);
+                    table_body.appendChild(row);
+                }
+            });
+    });
+</script>
 {% endblock %}

@@ -2,8 +2,6 @@ from . import db
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 
-# db = SQLAlchemy()
-
 class Users(db.Model):
     UserID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Name = db.Column(db.String(50), nullable=False)
@@ -15,11 +13,6 @@ class Users(db.Model):
     role_relation = db.relationship('Roles')
     donor = db.relationship('Donors', backref='user', uselist=False)
 
-    # def create(self):
-    #     db.session.add(self)
-    #     db.session.commit()
-
-    # @staticmethod
     def get_by_email(email):
         return Users.query.filter_by(Email=email).first()
 

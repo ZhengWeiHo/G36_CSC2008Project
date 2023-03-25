@@ -26,9 +26,6 @@ def login():
                 session['email'] = email
                 print("Email added to session:", session['email'])
 
-                # Show a notification of successful login
-                flash('Login successful', 'success')
-
                 if int(user.Role) == 1:
                     return redirect('/main')
                 else:
@@ -102,29 +99,3 @@ def register():
 def logout():
     session.pop('email', None)
     return redirect('/')
-
-
-@auth.route('/donationshist')
-def donations():
-    donations = Donations.query.all()
-    return render_template('allhistory.html', donations=donations)
-
-@auth.route('/changestatus')
-def changestatus():
-    appointments = Appointment.query.all()
-    return render_template('status.html', appointments=appointments)
-
-@auth.route('/appointments/<int:id>/update', methods=['POST'])
-def update_appointment(id):
-    # Get the appointment to update
-    appointment = Appointment.query.filter_by(AppointmentID=id).first()
-
-    
-    appointment.Status = request.form['status']
-   
-
-    # Add the updated appointment to the session and commit the transaction
-    db.session.add(appointment)
-    db.session.commit()
-
-    return redirect('/changestatus')

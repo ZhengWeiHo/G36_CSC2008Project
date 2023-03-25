@@ -50,6 +50,42 @@ def eligibility():
     user_medical_condition = donor.medical_condition
     return render_template('eligibility_check.html', user_medical_condition=user_medical_condition)
 
+@views.route('/filter-donation-history', methods=['GET'])
+def filter_donation_history():
+    logged_in_user_email = session['email']
+    user = Users.get_by_email(logged_in_user_email)
+    donor_id = user.donor.DonorID
+
+    # Get filter parameters from the request
+    filter_date = request.args.get('date')
+    filter_quantity = request.args.get('quantity')
+    filter_location = request.args.get('location')
+
+    # Apply filters to the query based on the user's input
+    query = Donations.query.filter(Donations.DonorID == donor_id)
+
+    if filter_date:
+        query = query.filter(Donations.DonationDate == filter_date)
+
+    if filter_quantity:
+        query = query.filter(Donations.Quantity == filter_quantity)
+
+    if filter_location:
+        query = query.filter(Donations.Location == filter_location)
+
+    filtered_donations = query.all()
+
+    response = [
+        {
+            "date": donation.DonationDate.strftime('%Y-%m-%d'),
+            "quantity": donation.Quantity,
+            "location": donation.Location
+        }
+        for donation in filtered_donations
+    ]
+
+    return jsonify(response)
+
 @views.route('/donationhistory')
 def donationhistory():
     # Get logged in user's email
@@ -167,3 +203,28 @@ def appointmentSubmit():
     db.session.commit()
 
     return "Appointment created successfully!"
+
+@views.route('/donationshist')
+def donations():
+    donations = Donations.query.all()
+    return render_template('allhistory.html', donations=donations)
+
+@views.route('/changestatus')
+def changestatus():
+    appointments = Appointment.query.all()
+    return render_template('status.html', appointments=appointments)
+
+@views.route('/appointments/<int:id>/update', methods=['POST'])
+def update_appointment(id):
+    # Get the appointment to update
+    appointment = Appointment.query.filter_by(AppointmentID=id).first()
+
+    
+    appointment.Status = request.form['status']
+   
+
+    # Add the updated appointment to the session and commit the transaction
+    db.session.add(appointment)
+    db.session.commit()
+
+    return redirect('/changestatus')
