@@ -1,0 +1,11 @@
+UserID,Name,Email,Phone,Password,Role
+1,user1,user1@example.com,+6535211711,$2b$12$3dbGj9vP910kgxeoBDVlt.b9DUz2xJyXjYZp2S6XwcTZVW.t/WtzC,1
+2,user2,user2@example.com,+6572938632,$2b$12$S3NMFsv19jcxlB8d5RcxbeOKjSB5QmOUqKOcfqnv60JXsl3d7Rgx2,1
+3,user3,user3@example.com,+6584250528,$2b$12$Jhz.urm2pxd2z3BragvrTuOzdQ79u3we78dciGFxjjpdNraXxTZYm,1
+4,user4,user4@example.com,+6525655472,$2b$12$fNV8A8QCvUhzGcd9ghTbBusEULfQabkLZN.Fa8ThNBziFGTx3Zdhm,1
+5,user5,user5@example.com,+6570368145,$2b$12$vWOnQTyn1nq4BLpeQyi5xuFZiNglxr0mtPeWyDUYQUO0dwUix694a,1
+6,user6,user6@example.com,+6580478515,$2b$12$xguy/vjrjKFmatf9NPQwNO.90Z1r.YgTQtsp2rNrlJ9a.JZ3tUbEe,1
+7,user7,user7@example.com,+6563804210,$2b$12$ZE0gnWa5RZTn58C7bYwwTu2ByqkOQXfQ8EFxsD5X7ZCNIhH9fFX5C,1
+8,user8,user8@example.com,+6571332284,$2b$12$eqDmR9FGlf8FBCdMrb2yBOGE0yUgur8x7ZcqZ./Bf66z8wDNA0YS2,1
+9,user9,user9@example.com,+6513402804,$2b$12$3kFtzAvTojZkhgCTXyfvNe5KfYA8WHADELl6CQE80C.hWssh/q4FS,1
+10,user10,user10@example.com,+6583417207,$2b$12$93yn9WbyAEbJSS1ArGx/oO.EBvq.ZBHFgAFqGFu8pTdiZ8PTh/hgi,1
