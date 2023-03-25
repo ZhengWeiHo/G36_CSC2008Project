@@ -36,6 +36,18 @@
     <div class="form-custom mb-4">
         <div class="row">
             <div class="col-md-3 filter-input">
+                <label for="filter-name" class="form-label">Filter by Name:</label>
+                <input type="text" class="form-control" id="filter-name">
+            </div>
+            <div class="col-md-3 filter-input">
+                <label for="filter-email" class="form-label">Filter by Email:</label>
+                <input type="text" class="form-control" id="filter-email">
+            </div>
+            <div class="col-md-3 filter-input">
+                <label for="filter-phone" class="form-label">Filter by Phone:</label>
+                <input type="text" class="form-control" id="filter-phone">
+            </div>
+            <div class="col-md-3 filter-input">
                 <label for="filter-date" class="form-label">Filter by Date:</label>
                 <input type="date" class="form-control" id="filter-date">
             </div>
@@ -93,13 +105,19 @@
         var filterDate = $('#filter-date').val();
         var filterQuantity = $('#filter-quantity').val();
         var filterLocation = $('#filter-location').val();
+        var filterName = $('#filter-name').val();
+        var filterEmail = $('#filter-email').val();
+        var filterPhone = $('#filter-phone').val();
 
         $.ajax({
             url: '/filter_donations',
             data: {
                 filter_date: filterDate,
                 filter_quantity: filterQuantity,
-                filter_location: filterLocation
+                filter_location: filterLocation,
+                filter_name: filterName,
+                filter_email: filterEmail,
+                filter_phone: filterPhone
             },
             success: function(data) {
                 var tbody = $('table tbody');

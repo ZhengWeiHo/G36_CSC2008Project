@@ -254,6 +254,18 @@ def filter_donations():
         location = request.args.get('filter_location')
         query = query.filter(Donations.Location == location)
 
+    if request.args.get('filter_name'):
+        name = request.args.get('filter_name')
+        query = query.filter(Users.Name.like(f'%{name}%'))
+
+    if request.args.get('filter_email'):
+        email = request.args.get('filter_email')
+        query = query.filter(Users.Email.like(f'%{email}%'))
+
+    if request.args.get('filter_phone'):
+        phone = request.args.get('filter_phone')
+        query = query.filter(Users.Phone.like(f'%{phone}%'))
+
     donations = query.all()
     data = []
     for donation, donor, user in donations:
