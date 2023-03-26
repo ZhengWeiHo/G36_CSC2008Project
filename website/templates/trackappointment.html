@@ -43,6 +43,7 @@
 				<th>Donation Center</th>
                 <th>Slot Start Time</th>
                 <th>Slot End Time</th>
+                <th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,6 +55,12 @@
 				<td>{{ appointment.Name }}</td>
                 <td>{{ appointment.StartTime }}</td>
                 <td>{{ appointment.EndTime }}</td>
+                <td>
+                    <form action="/appointments/{{ appointment.AppointmentID }}/delete" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
                 
             </tr>
                 

@@ -128,7 +128,7 @@ def trackappointment():
     donor_id = user.donor.DonorID
 
     # Define a join query to fetch the required columns for the logged-in user with the DonationCenter name and Slot start/end time
-    stmt = (db.session.query(Appointment.Date, Appointment.Status, DonationCenter.Name, Slots.StartTime, Slots.EndTime)
+    stmt = (db.session.query(Appointment.AppointmentID,Appointment.Date, Appointment.Status, DonationCenter.Name, Slots.StartTime, Slots.EndTime)
         .join(DonationCenter, DonationCenter.DonationCenterID == Appointment.DonationCenterID)
         .join(Slots, Slots.SlotID == Appointment.SlotID)
         .join(Donors, Donors.DonorID == Appointment.DonorID)
@@ -307,3 +307,12 @@ def filter_donations2():
             'location': donation.Location
         })
     return jsonify(data)
+
+@views.route('/appointments/<int:appointment_id>/delete', methods=['POST'])
+def delete_appointment(appointment_id):
+    appointment = Appointment.query.get(appointment_id)
+    db.session.delete(appointment)
+    db.session.commit()
+    flash('Appointment deleted successfully.')
+    return redirect('/trackappointment')
+
