@@ -15,8 +15,8 @@ end_date = datetime(2023, 3, 25)
 
 # Set parameters for generating users
 user_count = 10
-phone_prefix = "+65"
-user_password = "password"
+phone_prefix = "+65 "
+user_password = "123456"
 
 # Set parameters for generating donors
 donor_medical_conditions = list(range(1, 9))
@@ -46,7 +46,7 @@ donors_writer.writeheader()
 for i in range(1, user_count + 1):
     name = f"user{i}"
     email = f"{name}@example.com"
-    phone = f"{phone_prefix}{random.randint(10000000, 99999999)}"
+    phone = f"{phone_prefix}{random.randint(80000000, 99999999)}"
     password = bcrypt.hashpw(user_password.encode('utf-8'), bcrypt.gensalt())
 
     # Encode password before inserting to the database
@@ -104,7 +104,7 @@ with open(os.path.join(output_dir, 'donations.csv'), 'w', newline='') as csvfile
             'DonationID': i,
             'DonorID': random.choice(donor_ids),
             'DonationDate': random_date(start_date, end_date).strftime('%Y-%m-%d'),
-            'Quantity': random.randint(1, 5),
+            'Quantity': random.randint(350, 450),
             'Location': random.choice(locations)
         }
         writer.writerow(donation)

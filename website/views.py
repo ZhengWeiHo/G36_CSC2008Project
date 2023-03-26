@@ -73,6 +73,7 @@ def filter_donation_history():
     if filter_location:
         query = query.filter(Donations.Location == filter_location)
 
+    query = query.order_by(Donations.DonationDate.desc())
     filtered_donations = query.all()
 
     response = [
@@ -98,7 +99,7 @@ def donationhistory():
     donor_id = user.donor.DonorID
 
     # Define a query to fetch only the required columns for the logged-in user
-    stmt = select(Donations.DonationDate, Donations.Quantity, Donations.Location).where(Donations.DonorID == donor_id)
+    stmt = select(Donations.DonationDate, Donations.Quantity, Donations.Location).where(Donations.DonorID == donor_id).order_by(Donations.DonationDate.desc())
 
     # Execute the query
     result = db.session.execute(stmt)
@@ -132,7 +133,9 @@ def trackappointment():
         .join(DonationCenter, DonationCenter.DonationCenterID == Appointment.DonationCenterID)
         .join(Slots, Slots.SlotID == Appointment.SlotID)
         .join(Donors, Donors.DonorID == Appointment.DonorID)
-        .filter(Donors.DonorID == donor_id))
+        .filter(Donors.DonorID == donor_id)
+        .filter(Appointment.Status == "Pending")
+        .order_by(Appointment.AppointmentID.desc()))
 
     result = stmt.all()
 
@@ -212,6 +215,7 @@ def donations():
     donations = db.session.query(Donations, Donors, Users)\
         .join(Donors, Donations.DonorID == Donors.DonorID)\
         .join(Users, Donors.UserID == Users.UserID)\
+        .order_by(Donations.DonationDate.desc())\
         .all()
     return render_template('allhistory.html', donations=donations)
 
@@ -266,6 +270,7 @@ def filter_donations():
         phone = request.args.get('filter_phone')
         query = query.filter(Users.Phone.like(f'%{phone}%'))
 
+    query = query.order_by(Donations.DonationDate.desc())
     donations = query.all()
     data = []
     for donation, donor, user in donations:
@@ -298,6 +303,7 @@ def filter_donations2():
         location = request.args.get('filter_location')
         query = query.filter(Donations.Location == location)
 
+    query = query.order_by(Donations.DonationDate.desc())
     donations = query.all()
     data = []
     for donation, donor, user in donations:
