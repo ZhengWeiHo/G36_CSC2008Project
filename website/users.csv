@@ -1,5 +1,5 @@
 UserID,Name,Email,Phone,Password,Role
-1,user1,user1@example.com,+65 96293945,$2b$12$g51/m/Y1tuGcOJ9dmFQ4PObgxALjRm2t8nzNtCBq5Zzexaqp2N0rm,1
+1,user1,user1@example.com,+65 96293945,$2b$12$g51/m/Y1tuGcOJ9dmFQ4PObgxALjRm2t8nzNtCBq5Zzexaqp2N0rm,2
 2,user2,user2@example.com,+65 86014592,$2b$12$pg3HuPzzy2/ZfFmcF//zueEVlqdNRqfV8cvxhEjLCEmq8cSNoTBN2,1
 3,user3,user3@example.com,+65 87268042,$2b$12$0UPt8YoI1kGZoyOU16Trc.cCCSnXzZ10S11WJEaEe7LekMKnDWW4K,1
 4,user4,user4@example.com,+65 82922809,$2b$12$vy67lc44Kh8wS/XAKpxyJuVzP8vwKZ1w3qvgV2aYcLnLqkzpyy0me,1

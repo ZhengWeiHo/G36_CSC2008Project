@@ -196,7 +196,7 @@ def appointmentSubmit():
     slot_id = request.form['time']
 
     # Create the Appointment object with the parsed date object
-    appointment = Appointment(Date=appointment_date, Status="Upcoming", DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
+    appointment = Appointment(Date=appointment_date, Status="Pending", DonorID=donor_id, DonationCenterID=center_id, SlotID=slot_id)
     db.session.add(appointment)
     db.session.commit()
 
@@ -205,7 +205,8 @@ def appointmentSubmit():
     slot.Booked_Count += 1
     db.session.commit()
 
-    return "Appointment created successfully!"
+    return redirect('/trackappointment')
+
 
 # ----------------------------
 # For staff page
@@ -319,6 +320,6 @@ def delete_appointment(appointment_id):
     appointment = Appointment.query.get(appointment_id)
     db.session.delete(appointment)
     db.session.commit()
-    flash('Appointment deleted successfully.')
+    
     return redirect('/trackappointment')
 
