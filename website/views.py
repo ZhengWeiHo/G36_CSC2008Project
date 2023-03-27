@@ -233,10 +233,16 @@ def update_appointment(id):
 
     
     appointment.Status = request.form['status']
+
+    if appointment.Status == 'Completed':
+        donor = Donors.query.filter_by(DonorID=appointment.DonorID).first()
+        donationcenter = DonationCenter.query.filter_by(DonationCenterID=appointment.DonationCenterID).first()
+        donation = Donations(DonorID=donor.DonorID, DonationDate=appointment.Date, Quantity=100, Location=donationcenter.Name)
+        db.session.add(donation)
    
 
     # Add the updated appointment to the session and commit the transaction
-    db.session.add(appointment)
+    
     db.session.commit()
 
     return redirect('/changestatus')

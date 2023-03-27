@@ -47,8 +47,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for appointment in appointments %}
-			<tr>
+			{% for appointment in appointments|sort(reverse=True, attribute='Date') %}
+            {% if appointment.Status == 'Pending' %}
+                <tr style="background-color: rgb(245, 202, 202);">
+            {% else %}
+                <tr>
+            {% endif %}
 				<td>{{ appointment.AppointmentID }}</td>
 				<td>{{ appointment.Date }}</td>
 				<td>{{ appointment.Status }}</td>
