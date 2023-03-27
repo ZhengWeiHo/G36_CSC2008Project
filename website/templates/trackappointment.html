@@ -56,7 +56,7 @@
                 <td>{{ appointment.StartTime }}</td>
                 <td>{{ appointment.EndTime }}</td>
                 <td>
-                    <form action="/appointments/{{ appointment.AppointmentID }}/delete" method="POST">
+                    <form action="/appointments/{{ appointment.AppointmentID }}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?')">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
