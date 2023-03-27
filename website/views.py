@@ -223,8 +223,17 @@ def donations():
 
 @views.route('/changestatus')
 def changestatus():
-    appointments = Appointment.query.all()
-    return render_template('status.html', appointments=appointments)
+
+    stmt = (db.session.query(Appointment.AppointmentID, Appointment.Date, Appointment.Status,
+                         DonationCenter.Name, Donors.DonorName, Slots.StartTime, Slots.EndTime)
+        .join(DonationCenter, DonationCenter.DonationCenterID == Appointment.DonationCenterID)
+        .join(Slots, Slots.SlotID == Appointment.SlotID)
+        .join(Donors, Donors.DonorID == Appointment.DonorID)
+        .order_by(Appointment.AppointmentID.desc()))
+
+    result = stmt.all()
+    
+    return render_template('status.html', appointments=result)
 
 @views.route('/appointments/<int:id>/update', methods=['POST'])
 def update_appointment(id):
@@ -237,7 +246,7 @@ def update_appointment(id):
     if appointment.Status == 'Completed':
         donor = Donors.query.filter_by(DonorID=appointment.DonorID).first()
         donationcenter = DonationCenter.query.filter_by(DonationCenterID=appointment.DonationCenterID).first()
-        donation = Donations(DonorID=donor.DonorID, DonationDate=appointment.Date, Quantity=100, Location=donationcenter.Name)
+        donation = Donations(DonorID=donor.DonorID, DonationDate=appointment.Date, Quantity=350, Location=donationcenter.Name)
         db.session.add(donation)
    
 

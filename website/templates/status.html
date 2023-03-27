@@ -40,9 +40,10 @@
 				<th>AppointmentID</th>
 				<th>Date</th>
 				<th>Status</th>
-				<th>DonorID</th>
-				<th>DonationCenterID</th>
-                <th>SlotID</th>
+				<th>DonorName</th>
+				<th>Location</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
                 <th>Action</th>
 			</tr>
 		</thead>
@@ -56,9 +57,10 @@
 				<td>{{ appointment.AppointmentID }}</td>
 				<td>{{ appointment.Date }}</td>
 				<td>{{ appointment.Status }}</td>
-				<td>{{ appointment.DonorID }}</td>
-				<td>{{ appointment.DonationCenterID }}</td>
-                <td>{{ appointment.SlotID }}</td>
+				<td>{{ appointment.DonorName }}</td>
+				<td>{{ appointment.Name }}</td>
+                <td>{{ appointment.StartTime }}</td>
+                <td>{{ appointment.EndTime }}</td>
                 <td>
                     <form method="POST" action="/appointments/{{ appointment.AppointmentID }}/update">
                         <div class="form-group">
