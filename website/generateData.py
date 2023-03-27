@@ -30,7 +30,6 @@ locations = ['BloodBank@Outram', 'BloodBank@DhobyGhaut', 'BloodBank@Woodlands', 
 output_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Open CSV files for writing
-# Open CSV files for writing
 users_file = open(os.path.join(output_dir, 'users.csv'), 'w', newline='')
 donors_file = open(os.path.join(output_dir, 'donors.csv'), 'w', newline='')
 
@@ -51,7 +50,7 @@ for i in range(1, user_count + 1):
 
     # Encode password before inserting to the database
     password = password.decode('utf-8')
-    role = 1
+    role = random.choice([1, 2])
 
     # Write user record to CSV
     user = {
